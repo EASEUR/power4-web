@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>/!\Puissant Scam/!\</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>         
+        Puissant Scam 
+    </h1>
+    <h2>
+        Entrez vos coordonnées bancaires :</h2>
+    <h3>{{if eq .Winner 0}}
+        <p>Tour du joueur : <strong>{{.Player}}</strong></p>
+    {{else}}
+        <p class="winner">Le joueur <strong>{{.Winner}}</strong> a gagné !</p>
+    {{end}}
+    </h3>
+
+    <!-- Boutons pour jouer dans chaque colonne -->
+    <div class="cols">
+        <!-- un formulaire par colonne (POST /play) -->
+        <form action="/play" method="post"><input type="hidden" name="column" value="0"><button type="submit">↓</button></form>
+        <form action="/play" method="post"><input type="hidden" name="column" value="1"><button type="submit">↓</button></form>
+        <form action="/play" method="post"><input type="hidden" name="column" value="2"><button type="submit">↓</button></form>
+        <form action="/play" method="post"><input type="hidden" name="column" value="3"><button type="submit">↓</button></form>
+        <form action="/play" method="post"><input type="hidden" name="column" value="4"><button type="submit">↓</button></form>
+        <form action="/play" method="post"><input type="hidden" name="column" value="5"><button type="submit">↓</button></form>
+        <form action="/play" method="post"><input type="hidden" name="column" value="6"><button type="submit">↓</button></form>
+    </div>
+
+    <table class="board">
+        {{range .Grid}}
+        <tr>
+            {{range .}}
+            <td>
+                <div class="cell {{.}}"></div>
+            </td>
+            {{end}}
+        </tr>
+        {{end}}
+    </table>
+
+    <div class="controls">
+        <form action="/reset" method="post" style="display:inline;">
+            <button type="submit">Réinitialiser la partie</button>
+        </form>
+        <span class="hint">Nos meilleurs scammeurs se chargeront de récolter vos données personnelles si vous gagnez la partie.</span>
+    </div>
+            <img src="/static/ab6775700000ee8567190dbd6150d6c1487e952c.jpg" alt="Logo" style="width:300px;height:auto;">
+
+</body>
+</html>
