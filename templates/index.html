@@ -10,11 +10,13 @@
         Puissant Scam 
     </h1>
     <h2>
-        Entrez vos coordonnées bancaires :</h2>
-    <h3>{{if eq .Winner 0}}
-        <p>Tour du joueur : <strong>{{.Player}}</strong></p>
+        Faites vos jeux !! ^^'
+    </h2>
+    <h3>
+    {{if eq .Winner 0}}
+    <p>Tour du joueur : <strong>{{.Player}}</strong></p>
     {{else}}
-        <p class="winner">Le joueur <strong>{{.Winner}}</strong> a gagné ! Ses données bancaires ont été leak avec succès !!!</p>
+    <p class="winner">Le joueur <strong>{{.Winner}}</strong> a gagné ! Ses données bancaires ont été leak avec succès !!!</p>
     {{end}}
     </h3>
 
@@ -46,8 +48,10 @@
         <form action="/reset" method="post" style="display:inline;">
             <button type="submit">Réinitialiser la partie</button>
         </form>
+        <br>
         <span class="hint">Nos meilleurs scammeurs se chargeront de récolter vos données personnelles si vous gagnez la partie.</span>
     </div>
+    <br>
             <img src="/static/ab6775700000ee8567190dbd6150d6c1487e952c.jpg" alt="Logo" style="width:300px;height:auto;">
 
 </body>
