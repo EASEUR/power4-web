@@ -14,9 +14,11 @@ const COLS = 7
 
 // Game contient l'état du jeu
 type Game struct {
-	Grid   [ROWS][COLS]int // 0 = vide, 1 = joueur 1 (rouge), 2 = joueur 2 (jaune)
-	Player int             // joueur courant (1 ou 2)
-	Winner int             // 0 = pas de gagnant, 1 ou 2 = gagnant
+	Grid    [ROWS][COLS]int // 0 = vide, 1 = joueur 1 (rouge), 2 = joueur 2 (jaune)
+	Player  int             // joueur courant (1 ou 2)
+	Winner  int             // 0 = pas de gagnant, 1 ou 2 = gagnant
+	LastRow int
+	LastCol int
 }
 
 var (
@@ -34,6 +36,8 @@ func (g *Game) playMove(col int) bool {
 	for r := ROWS - 1; r >= 0; r-- { // du bas vers le haut
 		if g.Grid[r][col] == 0 {
 			g.Grid[r][col] = g.Player
+			g.LastRow = r
+			g.LastCol = col
 			return true
 		}
 	}
@@ -111,6 +115,9 @@ func (g *Game) reset() {
 	}
 	g.Player = 1
 	g.Winner = 0
+	g.LastRow = -1
+	g.LastCol = -1
+
 }
 
 // homeHandler affiche la page principale.
@@ -134,13 +141,17 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	data := struct {
-		Grid   [][]string
-		Player int
-		Winner int
+		Grid    [][]string
+		Player  int
+		Winner  int
+		LastRow int
+		LastCol int
 	}{
-		Grid:   display,
-		Player: game.Player,
-		Winner: game.Winner,
+		Grid:    display,
+		Player:  game.Player,
+		Winner:  game.Winner,
+		LastRow: game.LastRow,
+		LastCol: game.LastCol,
 	}
 	mu.Unlock()
 

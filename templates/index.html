@@ -6,6 +6,28 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+    <div class="matrix-bg">
+    <pre>
+        गधा बेवकूफ ठग  चोर धोखेबाज़ हाहा 
+        GADHA FRAUD LOL  HACKER INDIEN PUISSANT SCAM 
+        बेवकूफ मूर्ख लोल हाहा धन धन धन 
+        SCAMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+    </pre>
+    <pre>
+        गधा बेवकूफ ठग  चोर धोखेबाज़ हाहा 
+        GADHA FRAUD LOL  HACKER INDIEN PUISSANT SCAM 
+        बेवकूफ मूर्ख लोल हाहा धन धन धन 
+        SCAMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+    </pre>
+    <pre>
+        गधा बेवकूफ ठग  चोर धोखेबाज़ हाहा 
+        GADHA FRAUD LOL  HACKER INDIEN PUISSANT SCAM 
+        बेवकूफ मूर्ख लोल हाहा धन धन धन 
+        SCAMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+    </pre>
+</div>
+
+
     <h1>         
         Puissant Scam 
     </h1>
@@ -31,23 +53,39 @@
         <form action="/play" method="post"><input type="hidden" name="column" value="5"><button type="submit">↓</button></form>
         <form action="/play" method="post"><input type="hidden" name="column" value="6"><button type="submit">↓</button></form>
     </div>
-
-    <table class="board">
-        {{range .Grid}}
-        <tr>
-            {{range .}}
-            <td>
-                <div class="cell {{.}}"></div>
-            </td>
+    
+   <table class="board">
+    {{range $i, $row := .Grid}}
+    <tr>
+        {{range $j, $cell := $row}}
+        <td>
+            {{if eq $cell "empty"}}
+                <div class="cell"></div>
+            {{else if eq $cell "red"}}
+                {{if and (eq $i $.LastRow) (eq $j $.LastCol)}}
+                    <div class="cell red drop"></div>
+                {{else}}
+                    <div class="cell red"></div>
+                {{end}}
+            {{else if eq $cell "yellow"}}
+                {{if and (eq $i $.LastRow) (eq $j $.LastCol)}}
+                    <div class="cell yellow drop"></div>
+                {{else}}
+                    <div class="cell yellow"></div>
+                {{end}}
             {{end}}
-        </tr>
+        </td>
         {{end}}
-    </table>
+    </tr>
+    {{end}}
+</table>
+
 
     <div class="controls">
         <form action="/reset" method="post" style="display:inline;">
             <button type="submit">Réinitialiser la partie</button>
         </form>
+        <br>
         <br>
         <span class="hint">Nos meilleurs scammeurs se chargeront de récolter vos données personnelles si vous gagnez la partie.</span>
     </div>
