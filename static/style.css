@@ -71,6 +71,8 @@ h3 {
     font-size: 18px;
     cursor: pointer;
     border-radius: 4px;
+    background: black;
+    color: yellow;
 }
 
 /* plateau */
@@ -90,7 +92,7 @@ td {
     width: 52px;
     height: 52px;
     border-radius: 50%;
-    background: #d7e3ea; /* couleur du trou vide */
+    background: #000000; /* couleur du trou vide */
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
 }
 
