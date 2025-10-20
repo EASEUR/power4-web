@@ -26,21 +26,21 @@ body {
   top: 0;
   left: -150px;
   width: 100%;
-  height: 200%; /* un peu plus haut que l’écran pour le scroll */
+  height: 1000%; /* un peu plus haut que l’écran pour le scroll */
   background: rgb(0, 0, 0); /* fonce un peu pour contraster */
   color: rgba(255, 0, 0, 0.468);
   font-family: monospace;
   font-size: 50px;
-  line-height: 55px;
+  line-height: 75px;
   overflow: hidden;
   z-index: -1; /* 🔥 ceci la met derrière ton jeu */
-  animation: scrollText 20s linear infinite;
+  animation: scrollText 100s linear infinite;
   white-space: pre;
   padding: 20px;
 }
 
 @keyframes scrollText {
-  from { transform: translateY(0); }
+  from { transform: translateY(200); }
   to { transform: translateY(-100%); }
 }
 
@@ -79,10 +79,19 @@ h3 {
 table.board {
     margin: 10px auto;
     border-collapse: collapse;
-    background: #5a1212;
+    background: linear-gradient(135deg, #1a0000, #5a1212, #000000);
+    background-size: 200% 200%;
+    animation: boardGradient 5s ease infinite;
     padding: 10px;
     border-radius: 8px;
 }
+
+@keyframes boardGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 
 /* cellule contenant le cercle (jeton) */
 td {
@@ -93,7 +102,7 @@ td {
     height: 52px;
     border-radius: 50%;
     background: #000000; /* couleur du trou vide */
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: inset 0 2px 4px rgb(152, 33, 0);
 }
 
 /* classes pour joueurs */
