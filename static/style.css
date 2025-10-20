@@ -81,9 +81,10 @@ table.board {
     border-collapse: collapse;
     background: linear-gradient(135deg, #1a0000, #5a1212, #000000);
     background-size: 200% 200%;
-    animation: boardGradient 5s ease infinite;
+    animation: boardGradient 4s ease infinite;
     padding: 10px;
     border-radius: 8px;
+    box-shadow: inset 0px 2px 4px rgb(91, 0, 0);
 }
 
 @keyframes boardGradient {
@@ -98,11 +99,11 @@ td {
     padding: 6px;
 }
 .cell {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
+    width:50px;
+    height: 50px;
+    border-radius: 45%;
     background: #000000; /* couleur du trou vide */
-    box-shadow: inset 0 2px 4px rgb(152, 33, 0);
+    box-shadow: inset 0px 2px 4px rgb(121, 16, 0);
 }
 
 /* classes pour joueurs */
@@ -123,7 +124,7 @@ td {
     background: yellow;
     color: black;
 }
-.hint { margin-left: 12px; color: #ffffff; font-size: 14px; }
+.hint { margin-left: 12px; color: #fffb007e; font-size: 9px; }
 .winner { font-size: 35px; color: yellow; font-weight: bold; }
 
 /* Animation de chute du jeton */
