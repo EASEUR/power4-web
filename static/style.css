@@ -3,11 +3,10 @@ html, body {
  padding: 0;
  height: 100%;
  }
-
+/* propriétés de base du site */
 body {
   min-height: 100vh;
-  background-color: #000000; /* couleur de base */
-  /*background-image: linear-gradient(45deg, orange, red, orange);*/
+  background-color: #000000; 
   background-size: 400% 400%;
   animation: gradientMove 5s ease infinite;
   font-family: Verdana, sans-serif;
@@ -21,19 +20,20 @@ body {
   100% { background-position: 0% 50%; }
   }
 
+  /* Effet "matrix" en arrière plan qui scroll*/
 .matrix-bg {
   position: fixed;
   top: 0;
   left: -150px;
   width: 100%;
-  height: 1000%; /* un peu plus haut que l’écran pour le scroll */
-  background: rgb(0, 0, 0); /* fonce un peu pour contraster */
+  height: 1000%; /* taille de la "page" qu'on fait scroller en arrière plan*/
+  background: rgb(0, 0, 0); 
   color: rgba(255, 0, 0, 0.468);
   font-family: monospace;
   font-size: 50px;
   line-height: 75px;
   overflow: hidden;
-  z-index: -1; /* 🔥 ceci la met derrière ton jeu */
+  z-index: -1; /* met en arrière-plan */
   animation: scrollText 100s linear infinite;
   white-space: pre;
   padding: 20px;
@@ -44,7 +44,7 @@ body {
   to { transform: translateY(-100%); }
 }
 
-
+/* propriété des différents headers */
 h1 {
  font-size: 300%; 
  color: rgb(255, 230, 0); 
@@ -62,7 +62,7 @@ h3 {
  color: yellow; 
  text-align: center;
  }
-
+/* boutons flèches de colonnes */
 .cols { margin: 15px auto; }
 .cols form { display: inline-block; margin: 0 9px; }
 .cols button {
@@ -75,7 +75,7 @@ h3 {
     color: yellow;
 }
 
-/* plateau */
+/* plateau avec dégradé animé */
 table.board {
     margin: 10px auto;
     border-collapse: collapse;
@@ -94,7 +94,7 @@ table.board {
 }
 
 
-/* cellule contenant le cercle (jeton) */
+/* cellule contenant le jeton */
 td {
     padding: 6px;
 }
@@ -106,15 +106,15 @@ td {
     box-shadow: inset 0px 2px 4px rgb(121, 16, 0);
 }
 
-/* classes pour joueurs */
+/* couleurs jetons */
 .cell.red {
-    background: #e53935; /* rouge */
+    background: #ffe100; /* rouge */
 }
 .cell.yellow {
-    background: #f4c542; /* jaune/or */
+    background: #ff0000; /* jaune/or */
 }
 
-/* zone de contrôle */
+/* bouton reset */
 .controls { margin-top: 12px; }
 .controls button {
     padding: 8px 14px;
@@ -124,6 +124,7 @@ td {
     background: yellow;
     color: black;
 }
+/* propriétés de la phrase sous le bouton, et de la phrase pour winner */
 .hint { margin-left: 12px; color: #fffb007e; font-size: 9px; }
 .winner { font-size: 35px; color: yellow; font-weight: bold; }
 

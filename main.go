@@ -12,13 +12,15 @@ import (
 const ROWS = 6
 const COLS = 7
 
-// Game contient l'état du jeu
+// Cette structure contient les variables principales qui sont nécessaires à la jouabilité
+// (qu'on enverra ensuite au template html via la fonction homeHandler)
 type Game struct {
-	Grid    [ROWS][COLS]int // 0 = vide, 1 = joueur 1 (rouge), 2 = joueur 2 (jaune)
-	Player  int             // joueur courant (1 ou 2)
-	Winner  int             // 0 = pas de gagnant, 1 ou 2 = gagnant
-	LastRow int
-	LastCol int
+	Grid    [ROWS][COLS]int // état des cellules (0 = vide, 1= joueur 1, 2= joueur 2)
+	Player  int             // joueur actuel qui doit jouer
+	Winner  int             // détermine le gagnant
+	LastRow int             //
+	LastCol int             // Ces 2 variables (LastCol et LastRow) ont été rajoutées pour le style d'effet de "drop" des jetons
+	// (pas nécessaire pour le jeu mais ajoute du style)
 }
 
 var (
@@ -27,13 +29,12 @@ var (
 	tmpl = template.Must(template.ParseFiles("templates/index.html"))
 )
 
-// playMove insère une pièce dans la colonne col (0..6).
-// Retourne true si l'insertion a réussi, false si colonne invalide/pleine.
+// playMove pour jouer un coup, vérifie si la colonne est pleine
 func (g *Game) playMove(col int) bool {
 	if col < 0 || col >= COLS {
 		return false
 	}
-	for r := ROWS - 1; r >= 0; r-- { // du bas vers le haut
+	for r := ROWS - 1; r >= 0; r-- { // boucle pour faire descendre le jeton jusqu'en bas
 		if g.Grid[r][col] == 0 {
 			g.Grid[r][col] = g.Player
 			g.LastRow = r
@@ -44,7 +45,7 @@ func (g *Game) playMove(col int) bool {
 	return false
 }
 
-// switchPlayer alterne le joueur courant
+// switchPlayer pour alterner le tour des joueurs
 func (g *Game) switchPlayer() {
 	if g.Player == 1 {
 		g.Player = 2
@@ -53,7 +54,7 @@ func (g *Game) switchPlayer() {
 	}
 }
 
-// checkWin parcourt la grille et retourne le gagnant (1 ou 2) ou 0 si aucun.
+// checkWin vérifie s'il y a un gagnant avec 4 jetons alignés
 func (g *Game) checkWin() int {
 	// horizontal
 	for r := 0; r < ROWS; r++ {
@@ -79,7 +80,7 @@ func (g *Game) checkWin() int {
 			}
 		}
 	}
-	// diagonale descendante (\)
+	// diagonale descendante
 	for r := 0; r < ROWS-3; r++ {
 		for c := 0; c < COLS-3; c++ {
 			v := g.Grid[r][c]
@@ -91,7 +92,7 @@ func (g *Game) checkWin() int {
 			}
 		}
 	}
-	// diagonale montante (/)
+	// diagonale montante
 	for r := 3; r < ROWS; r++ {
 		for c := 0; c < COLS-3; c++ {
 			v := g.Grid[r][c]
@@ -106,7 +107,7 @@ func (g *Game) checkWin() int {
 	return 0
 }
 
-// reset remet la partie à zéro
+// option reset pour remettre la partie à 0
 func (g *Game) reset() {
 	for r := 0; r < ROWS; r++ {
 		for c := 0; c < COLS; c++ {
@@ -120,12 +121,9 @@ func (g *Game) reset() {
 
 }
 
-// homeHandler affiche la page principale.
-// On prépare une grille "affichage" ([][]string) où chaque case vaut:
-// "" (vide), "red" ou "yellow" — le template utilise ces classes CSS.
+// HomeHandler pour afficher la page principale, création du tableau de puissance 4 pour l'envoyer au template html
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	mu.Lock()
-	// construire une grille de strings pour le template
 	display := make([][]string, ROWS)
 	for i := 0; i < ROWS; i++ {
 		display[i] = make([]string, COLS)
@@ -140,6 +138,9 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
+	// les variables de data sont les variables que l'on veut récupérer dans le fichier html
+	// Donc ici on a les variables de cellules, tour du joueur, gagnant, et les 2 variables pour l'effet
+	//de drop des jetons
 	data := struct {
 		Grid    [][]string
 		Player  int
@@ -155,20 +156,17 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	mu.Unlock()
 
-	// exécuter le template
 	if err := tmpl.Execute(w, data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
 
-// playHandler traite les POST /play avec field "column".
-// On accepte des formulaires qui envoient "column" en POST.
+// playHandler pour update le coup joué vers le site
 func playHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
-	// parse form values (utile si body form-encoded)
 	if err := r.ParseForm(); err != nil {
 		http.Error(w, "bad request", http.StatusBadRequest)
 		return
@@ -176,16 +174,14 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 	colStr := r.FormValue("column")
 	col, err := strconv.Atoi(colStr)
 	if err != nil {
-		// valeur invalide -> on redirige, sans rien faire
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 
+	// vérifie la win
 	mu.Lock()
-	// si partie déjà finie, on ignore les coups (ou tu peux reset si tu préfères)
 	if game.Winner == 0 {
 		if game.playMove(col) {
-			// vérifier victoire
 			if winner := game.checkWin(); winner != 0 {
 				game.Winner = winner
 			} else {
@@ -195,11 +191,10 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	mu.Unlock()
 
-	// redirige toujours vers la page principale pour voir l'état mis à jour
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	http.Redirect(w, r, "/", http.StatusSeeOther) // redirige toujours vers la page principale
 }
 
-// resetHandler permet de réinitialiser la partie (POST /reset)
+// resetHandler pour reset la partie en cours
 func resetHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -211,21 +206,18 @@ func resetHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
+// La fonction main reprend toutes les fonctions de handler nécessaires à la jouabilité pour les envoyer sur le site
+// on détermine aussi le chemin d'accès au fichier CSS
+// et le port de réseau utilisé pour héberger localement
 func main() {
-	// initialisation du jeu
-	game.reset()
 
-	// handlers
+	game.reset()
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/play", playHandler)
 	http.HandleFunc("/reset", resetHandler)
-
-	// servir CSS / static files depuis ./static/
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
-	port := ":83" // tu as demandé le port 83
+	port := ":3333"
 	fmt.Println("Serveur lancé sur http://localhost" + port)
-	// Attention : si tu es sur Unix, l'écoute sur un port <1024 demande souvent des droits root.
-	// Si tu veux éviter d'utiliser sudo, change ici en ":8080" et va sur http://localhost:8080
 	log.Fatal(http.ListenAndServe(port, nil))
 }

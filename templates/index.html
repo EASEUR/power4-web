@@ -2,11 +2,11 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>/!\Puissant Scam/!\</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>/!\Puissant Scam/!\</title> <!--Titre de l'onglet du site-->
+    <link rel="stylesheet" href="/static/style.css"> <!--Chemin d'accès au CSS-->
 </head>
 <body>
-    <div class="matrix-bg">
+    <div class="matrix-bg"> <!--Contenu du background "matrix" (ce sont des "insultes" softs en indien pour respecter la DA du projet style "scam") ayez du 2nd degré svp-->
     <pre>
         गधा बेवकूफ ठग  चोर धोखेबाज़ हाहा அனன்யா உன்னை 
         ஏமாற்றுவாள்!!அனன்யா உன்னை ஏமாற்றுவாள்!!
@@ -177,9 +177,9 @@
         </pre>
     </div>
     <h1>         
-        Puissant Scam 
+        Puissant Scam <!--header 1 (Titre)-->
     </h1>
-    <h3>
+    <h3> <!--header 2 (annonce du gagnant)-->
     {{if eq .Winner 0}}
     <p>→ Joueur : <strong>{{.Player}}</strong></p>
     {{else}}
@@ -198,7 +198,7 @@
         <form action="/play" method="post"><input type="hidden" name="column" value="5"><button type="submit">↓</button></form>
         <form action="/play" method="post"><input type="hidden" name="column" value="6"><button type="submit">↓</button></form>
     </div>
-    
+    <!--Variables de cellules avec l'effet de drop des jetons (d'où la création des variables LastRow + LastCol)-->
    <table class="board">
     {{range $i, $row := .Grid}}
     <tr>
@@ -225,7 +225,7 @@
     {{end}}
 </table>
 
-
+<!--contenu du bouton reset, et de la phrase drôle sous le bouton-->
     <div class="controls">
         <form action="/reset" method="post" style="display:inline;">
             <button type="submit">Reset</button>
